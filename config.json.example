@@ -1,0 +1,4 @@
+{
+  "server_url": "https://api.apivoid.com",
+  "api_key": "YOUR_APIVOID_API_KEY_HERE"  # pragma: allowlist secret
+}
