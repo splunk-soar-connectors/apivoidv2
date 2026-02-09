@@ -79,7 +79,9 @@ class CertificateDetails(ActionOutput):
     )
     fingerprint_sha1: str | None = OutputField(
         cef_types=["sha1", "hash"],
-        example_values=["f81e3171fa085bc04c83b6644b9f229f0cba8e57"],  # pragma: allowlist secret
+        example_values=[
+            "f81e3171fa085bc04c83b6644b9f229f0cba8e57"  # pragma: allowlist secret
+        ],
     )
     fingerprint_sha256: str | None = OutputField(
         cef_types=["sha256", "hash"],
@@ -254,10 +256,14 @@ class CertificateDetails(ActionOutput):
         example_values=[True, False],
     )
     authority_key_id: str | None = OutputField(
-        example_values=["301680146a4e50bf98689d5b7b2075d45901794866923206"],  # pragma: allowlist secret
+        example_values=[
+            "301680146a4e50bf98689d5b7b2075d45901794866923206"  # pragma: allowlist secret
+        ],
     )
     subject_key_id: str | None = OutputField(
-        example_values=["04148d939fbf9c7cf8ba64066baa73bb814351b7dc41"],  # pragma: allowlist secret
+        example_values=[
+            "04148d939fbf9c7cf8ba64066baa73bb814351b7dc41"  # pragma: allowlist secret
+        ],
     )
 
     # Key Usages (comma-separated)
