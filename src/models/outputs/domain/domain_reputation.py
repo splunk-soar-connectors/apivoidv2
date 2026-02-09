@@ -123,7 +123,7 @@ class DomainReputationDetails(ActionOutput):
         example_values=["AS15169", "AS13335"],
     )
 
-    # Domain Category (from 'category' object)
+    # Domain Category
     is_free_hosting: bool | None = OutputField(
         example_values=[True, False],
     )
@@ -149,7 +149,7 @@ class DomainReputationDetails(ActionOutput):
         example_values=[True, False],
     )
 
-    # Security Checks (from 'security_checks' object)
+    # Security Checks
     is_most_abused_tld: bool | None = OutputField(
         example_values=[True, False],
     )
@@ -166,7 +166,7 @@ class DomainReputationDetails(ActionOutput):
         example_values=[True, False],
     )
 
-    # Domain Parts (from 'domain_parts' object)
+    # Domain Parts
     root_domain: str | None = OutputField(
         cef_types=["domain"],
         example_values=["google.com", "example.org"],
@@ -178,7 +178,7 @@ class DomainReputationDetails(ActionOutput):
         example_values=["com", "org", "net"],
     )
 
-    # Risk Score (from 'risk_score' object)
+    # Risk Score
     risk_score: int | None = OutputField(
         example_values=[0, 50, 100],
     )

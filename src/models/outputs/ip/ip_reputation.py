@@ -82,7 +82,7 @@ class IpReputationDetails(ActionOutput):
         example_values=[],
     )
 
-    # Geolocation Information (from 'information' object)
+    # Geolocation Information
     reverse_dns: str | None = OutputField(
         cef_types=["host name"],
         example_values=["dojo.census.shodan.io"],
@@ -115,7 +115,7 @@ class IpReputationDetails(ActionOutput):
         example_values=["Google LLC", "FiberXpress BV"],
     )
 
-    # Bot & Service Detection (from 'information' object)
+    # Bot & Service Detection
     is_bogon: bool | None = OutputField(
         example_values=[True, False],
     )
@@ -147,7 +147,7 @@ class IpReputationDetails(ActionOutput):
         example_values=[True, False],
     )
 
-    # ASN Details (from 'asn' object)
+    # ASN Details
     asn: str | None = OutputField(
         example_values=["AS15169", "AS202425"],
     )
@@ -175,7 +175,7 @@ class IpReputationDetails(ActionOutput):
         example_values=["hosting", "isp", "business"],
     )
 
-    # Anonymity Detection (from 'anonymity' object)
+    # Anonymity Detection
     is_proxy: bool | None = OutputField(
         example_values=[True, False],
     )
@@ -198,7 +198,7 @@ class IpReputationDetails(ActionOutput):
         example_values=[True, False],
     )
 
-    # Risk Score (from 'risk_score' object)
+    # Risk Score
     risk_score: int | None = OutputField(
         example_values=[0, 50, 100],
     )

@@ -324,7 +324,7 @@ def ip_reputation(
             )
         )
 
-    # Extract v2 nested objects
+    # Extract nested objects
     information = data.get("information", {})
     asn_data = data.get("asn", {})
     anonymity = data.get("anonymity", {})
@@ -341,7 +341,7 @@ def ip_reputation(
         scan_time_ms=str(blacklists.get("scan_time_ms", "0.00")),
         elapsed_ms=data.get("elapsed_ms"),
         engines=engines_list,
-        # V2: Geolocation (from information)
+        # Geolocation (from information)
         reverse_dns=information.get("reverse_dns"),
         continent_code=information.get("continent_code"),
         continent_name=information.get("continent_name"),
@@ -352,7 +352,7 @@ def ip_reputation(
         latitude=information.get("latitude"),
         longitude=information.get("longitude"),
         isp=information.get("isp"),
-        # V2: Bot & Service Detection
+        # Bot & Service Detection
         is_bogon=information.get("is_bogon"),
         is_spamhaus_drop=information.get("is_spamhaus_drop"),
         is_fake_bot=information.get("is_fake_bot"),
@@ -363,7 +363,7 @@ def ip_reputation(
         aws_service=information.get("aws_service"),
         is_google_service=information.get("is_google_service"),
         is_satellite=information.get("is_satellite"),
-        # V2: ASN Details
+        # ASN Details
         asn=asn_data.get("asn"),
         asname=asn_data.get("asname"),
         asn_route=asn_data.get("route"),
@@ -372,7 +372,7 @@ def ip_reputation(
         abuse_email=asn_data.get("abuse_email"),
         asn_domain=asn_data.get("domain"),
         asn_type=asn_data.get("type"),
-        # V2: Anonymity Detection
+        # Anonymity Detection
         is_proxy=anonymity.get("is_proxy"),
         is_webproxy=anonymity.get("is_webproxy"),
         is_residential_proxy=anonymity.get("is_residential_proxy"),
@@ -380,7 +380,7 @@ def ip_reputation(
         is_hosting=anonymity.get("is_hosting"),
         is_relay=anonymity.get("is_relay"),
         is_tor=anonymity.get("is_tor"),
-        # V2: Risk Score
+        # Risk Score
         risk_score=risk_score.get("result"),
     )
 
@@ -453,7 +453,7 @@ def domain_reputation(
         scan_time_ms=str(blacklists.get("scan_time_ms", "0.00")),
         elapsed_ms=data.get("elapsed_ms"),
         engines=engines_list,
-        # V2: Server Details
+        # Server Details
         server_ip=server_details.get("ip"),
         reverse_dns=server_details.get("reverse_dns"),
         continent_code=server_details.get("continent_code"),
@@ -466,7 +466,7 @@ def domain_reputation(
         longitude=server_details.get("longitude"),
         isp=server_details.get("isp"),
         asn=server_details.get("asn"),
-        # V2: Category
+        # Category
         is_free_hosting=category.get("is_free_hosting"),
         is_anonymizer=category.get("is_anonymizer"),
         is_url_shortener=category.get("is_url_shortener"),
@@ -475,17 +475,17 @@ def domain_reputation(
         is_form_builder=category.get("is_form_builder"),
         is_free_file_sharing=category.get("is_free_file_sharing"),
         is_pastebin=category.get("is_pastebin"),
-        # V2: Security Checks
+        # Security Checks
         is_most_abused_tld=security_checks.get("is_most_abused_tld"),
         is_suspicious_homoglyph=security_checks.get("is_suspicious_homoglyph"),
         is_possible_typosquatting=security_checks.get("is_possible_typosquatting"),
         website_popularity=security_checks.get("website_popularity"),
         is_risky_category=security_checks.get("is_risky_category"),
-        # V2: Domain Parts
+        # Domain Parts
         root_domain=domain_parts.get("root_domain"),
         subdomain=domain_parts.get("subdomain"),
         tld=domain_parts.get("tld"),
-        # V2: Risk Score
+        # Risk Score
         risk_score=risk_score.get("result"),
     )
 
