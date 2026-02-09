@@ -3,14 +3,14 @@
 Publisher: Splunk Inc. <br>
 Connector Version: 1.0.2 <br>
 Product Vendor: APIVoid <br>
-Product Name: APIVoid <br>
+Product Name: APIVoid v2 <br>
 Minimum Product Version: 7.0.0
 
 APIVoid v2 connector for Splunk SOAR using the SDK
 
 ### Configuration variables
 
-This table lists the configuration variables required to operate APIvoid v2. These variables are specified when configuring a APIVoid asset in Splunk SOAR.
+This table lists the configuration variables required to operate APIvoid v2. These variables are specified when configuring a APIVoid v2 asset in Splunk SOAR.
 
 VARIABLE | REQUIRED | TYPE | DESCRIPTION
 -------- | -------- | ---- | -----------

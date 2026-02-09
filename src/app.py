@@ -58,9 +58,9 @@ app = App(
     logo="logo_apivoid.svg",
     logo_dark="logo_apivoid_dark.svg",
     product_vendor="APIVoid",
-    product_name="APIVoid",
+    product_name="APIVoid v2",
     publisher="Splunk Inc.",
-    appid="ffffffff-ffff-4fff-afff-ffffffffffff",
+    appid="a1066f2e-bd10-4607-bb3d-e4df99fe6d7f",
     fips_compliant=False,
     asset_cls=Asset,
 )
