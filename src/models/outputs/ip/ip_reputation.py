@@ -14,19 +14,6 @@
 """IP reputation models for ip_reputation action"""
 
 from soar_sdk.action_results import ActionOutput, OutputField
-from soar_sdk.params import Param, Params
-
-
-class IpReputationParams(Params):
-    """Parameters for IP reputation action"""
-
-    ip: str = Param(
-        description="IP address to check reputation",
-        required=True,
-        primary=True,
-        cef_types=["ip"],
-        column_name="IP Address",
-    )
 
 
 class IpBlacklistEngine(ActionOutput):
@@ -213,6 +200,9 @@ class IpReputationSummary(ActionOutput):
 
     def get_message(self) -> str:
         """Generate formatted summary message"""
-        if self.detections is not None and self.engines_count:
+        if self.detections is not None and self.engines_count is not None:
             return f"Detections: {self.detections}, Engines count: {self.engines_count}"
-        return "IP reputation check completed"
+        elif self.detection_rate is not None:
+            return f"Detection rate: {self.detection_rate}"
+        else:
+            return "IP reputation check completed (no detection data)"

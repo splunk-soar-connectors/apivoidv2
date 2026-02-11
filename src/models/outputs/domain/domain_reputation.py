@@ -14,19 +14,6 @@
 """Domain reputation models for domain_reputation action"""
 
 from soar_sdk.action_results import ActionOutput, OutputField
-from soar_sdk.params import Param, Params
-
-
-class DomainReputationParams(Params):
-    """Parameters for domain reputation action"""
-
-    domain: str = Param(
-        description="Domain to check reputation",
-        required=True,
-        primary=True,
-        cef_types=["domain", "url"],
-        column_name="Domain",
-    )
 
 
 class BlacklistEngine(ActionOutput):
@@ -193,6 +180,9 @@ class DomainReputationSummary(ActionOutput):
 
     def get_message(self) -> str:
         """Generate formatted summary message"""
-        if self.detections is not None and self.engines_count:
+        if self.detections is not None and self.engines_count is not None:
             return f"Detections: {self.detections}, Engines count: {self.engines_count}"
-        return "Domain reputation check completed"
+        elif self.detection_rate is not None:
+            return f"Detection rate: {self.detection_rate}"
+        else:
+            return "Domain reputation check completed (no detection data)"

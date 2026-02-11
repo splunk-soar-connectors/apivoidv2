@@ -20,20 +20,21 @@ from .apivoid_consts import *
 from .models.outputs.certificate.get_cert_info import (
     CertificateDetails,
     CertificateSummary,
-    GetCertInfoParams,
 )
 from .models.outputs.domain.domain_reputation import (
     BlacklistEngine,
     DomainReputationDetails,
-    DomainReputationParams,
     DomainReputationSummary,
 )
 from .models.outputs.ip.ip_reputation import (
     IpBlacklistEngine,
     IpReputationDetails,
-    IpReputationParams,
     IpReputationSummary,
 )
+from .models.inputs.get_cert_info_inputs import GetCertInfoParams
+from .models.inputs.domain_reputation_inputs import DomainReputationParams
+from .models.inputs.ip_reputation_inputs import IpReputationParams
+
 
 logger = getLogger()
 
@@ -69,7 +70,7 @@ app = App(
 # Helper function for API requests
 def _make_api_request(endpoint: str, asset: Asset, params: dict) -> dict:
     """
-    Make a REST API call to APIVoid v2 API.
+    REST API call to APIVoid v2
 
     :param endpoint: API endpoint (e.g., 'v2/ssl-info')
     :param asset: Asset configuration
@@ -436,7 +437,7 @@ def domain_reputation(
             )
         )
 
-    # Extract v2 nested objects
+    # Extract nested objects
     server_details = data.get("server_details", {})
     category = data.get("category", {})
     security_checks = data.get("security_checks", {})

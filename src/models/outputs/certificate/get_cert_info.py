@@ -14,19 +14,6 @@
 """Certificate information models for get_cert_info action"""
 
 from soar_sdk.action_results import ActionOutput, OutputField
-from soar_sdk.params import Param, Params
-
-
-class GetCertInfoParams(Params):
-    """Parameters for get_cert_info action"""
-
-    domain: str = Param(
-        description="Domain to query (e.g., google.com)",
-        required=True,
-        primary=True,
-        cef_types=["domain", "url"],
-        column_name="Domain",
-    )
 
 
 class CertificateDetails(ActionOutput):
