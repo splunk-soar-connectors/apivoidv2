@@ -11,18 +11,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+from . import domain_reputation, get_cert_info, ip_reputation
 
-
-from soar_sdk.params import Param, Params
-
-
-class GetCertInfoParams(Params):
-    """Parameters for get_cert_info action"""
-
-    domain: str = Param(
-        description="Domain to query (e.g., google.com)",
-        required=True,
-        primary=True,
-        cef_types=["domain", "url"],
-        column_name="Domain",
-    )
+__all__ = ["domain_reputation", "get_cert_info", "ip_reputation"]

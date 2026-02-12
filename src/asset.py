@@ -12,17 +12,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from soar_sdk.asset import BaseAsset, AssetField
 
-from soar_sdk.params import Param, Params
 
+class Asset(BaseAsset):
+    """APIVoid v2 API configuration"""
 
-class DomainReputationParams(Params):
-    """Parameters for domain reputation action"""
-
-    domain: str = Param(
-        description="Domain to check reputation",
+    server_url: str = AssetField(
+        description="API Server URL (e.g., https://api.apivoid.com)",
         required=True,
-        primary=True,
-        cef_types=["domain", "url"],
-        column_name="Domain",
     )
+    api_key: str = AssetField(
+        description="API Key for authentication",
+        sensitive=True,
+        required=True,
+    )
+
+
+__all__ = ["Asset"]

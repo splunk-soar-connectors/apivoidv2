@@ -94,6 +94,18 @@ dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
     "F403",  # Allow star imports from constants
     "F405",  # Allow undefined names from star imports
 ]
+"src/actions/get_cert_info.py" = [
+    "F403",  # Allow star imports from constants
+    "F405",  # Allow undefined names from star imports
+]
+"src/actions/ip_reputation.py" = [
+    "F403",  # Allow star imports from constants
+    "F405",  # Allow undefined names from star imports
+]
+"src/actions/domain_reputation.py" = [
+    "F403",  # Allow star imports from constants
+    "F405",  # Allow undefined names from star imports
+]
 
 [tool.ruff.lint.pyupgrade]
 # Preserve types, even if a file imports `from __future__ import annotations`.
