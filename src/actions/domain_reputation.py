@@ -30,6 +30,7 @@ class DomainReputationParams(Params):
     domain: str = Param(
         description="Domain to check reputation",
         primary=True,
+        cef_types=["domain", "url"],
         column_name="Domain",
     )
 
@@ -47,6 +48,7 @@ class BlacklistEngine(ActionOutput):
         column_name="Confidence",
     )
     reference: str | None = OutputField(
+        cef_types=["url"],
         column_name="Reference",
     )
     elapsed_ms: int | None = OutputField()
@@ -56,7 +58,7 @@ class DomainReputationDetails(ActionOutput):
     """Domain reputation check details and results"""
 
     # Basic Domain Info
-    host: str | None = OutputField()
+    host: str | None = OutputField(cef_types=["domain", "host name"])
 
     # Blacklist Scan Results
     detections: int | None = OutputField()
@@ -67,8 +69,8 @@ class DomainReputationDetails(ActionOutput):
     engines: list[BlacklistEngine] | None = OutputField()
 
     # Server Details
-    server_ip: str | None = OutputField()
-    reverse_dns: str | None = OutputField()
+    server_ip: str | None = OutputField(cef_types=["ip"])
+    reverse_dns: str | None = OutputField(cef_types=["host name"])
     continent_code: str | None = OutputField()
     continent_name: str | None = OutputField()
     country_code: str | None = OutputField()
@@ -98,7 +100,7 @@ class DomainReputationDetails(ActionOutput):
     is_risky_category: bool | None = OutputField()
 
     # Domain Parts
-    root_domain: str | None = OutputField()
+    root_domain: str | None = OutputField(cef_types=["domain"])
     subdomain: str | None = OutputField()
     tld: str | None = OutputField()
 

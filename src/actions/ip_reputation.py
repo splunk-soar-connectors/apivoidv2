@@ -30,6 +30,7 @@ class IpReputationParams(Params):
     ip: str = Param(
         description="IP address to check reputation",
         primary=True,
+        cef_types=["ip"],
         column_name="IP Address",
     )
 
@@ -44,6 +45,7 @@ class IpBlacklistEngine(ActionOutput):
         column_name="Detected",
     )
     reference: str | None = OutputField(
+        cef_types=["url"],
         column_name="Reference",
     )
     elapsed_ms: int | None = OutputField()
@@ -53,7 +55,7 @@ class IpReputationDetails(ActionOutput):
     """IP reputation check details and results"""
 
     # Basic IP Info
-    ip: str | None = OutputField()
+    ip: str | None = OutputField(cef_types=["ip"])
     version: str | None = OutputField()
 
     # Blacklist Scan Results
@@ -65,7 +67,7 @@ class IpReputationDetails(ActionOutput):
     engines: list[IpBlacklistEngine] | None = OutputField()
 
     # Geolocation Information
-    reverse_dns: str | None = OutputField()
+    reverse_dns: str | None = OutputField(cef_types=["host name"])
     continent_code: str | None = OutputField()
     continent_name: str | None = OutputField()
     country_code: str | None = OutputField()
@@ -94,8 +96,8 @@ class IpReputationDetails(ActionOutput):
     asn_route: str | None = OutputField()
     asn_org: str | None = OutputField()
     asn_country_code: str | None = OutputField()
-    abuse_email: str | None = OutputField()
-    asn_domain: str | None = OutputField()
+    abuse_email: str | None = OutputField(cef_types=["email"])
+    asn_domain: str | None = OutputField(cef_types=["domain"])
     asn_type: str | None = OutputField()
 
     # Anonymity Detection
@@ -151,7 +153,7 @@ def ip_reputation(
                 name=engine_info.get("name", engine_name),
                 detected=engine_info.get("detected"),
                 reference=engine_info.get("reference"),
-                elapsed_ms=str(engine_info.get("elapsed_ms", "0.00")),
+                elapsed_ms=int(engine_info.get("elapsed_ms")),
             )
         )
 

@@ -30,6 +30,7 @@ class GetCertInfoParams(Params):
     domain: str = Param(
         description="Domain to query (e.g., google.com)",
         primary=True,
+        cef_types=["domain", "url"],
         column_name="Domain",
     )
 
@@ -39,11 +40,10 @@ class CertificateDetails(ActionOutput):
 
     # Basic Info
     certificate_found: bool = OutputField(
+        cef_types=["certificate"],
         column_name="Certificate Found",
     )
-    host: str = OutputField(
-        column_name="Host",
-    )
+    host: str = OutputField(cef_types=["domain", "host name"], column_name="Host")
     elapsed_ms: int | None = OutputField(
         column_name="Response Time (ms)",
     )

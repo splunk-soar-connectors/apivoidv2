@@ -57,7 +57,7 @@ Read only: **True**
 
 PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 --------- | -------- | ----------- | ---- | --------
-**domain** | required | Domain to query (e.g., google.com) | string | |
+**domain** | required | Domain to query (e.g., google.com) | string | `domain` `url` |
 
 #### Action Output
 
@@ -65,9 +65,9 @@ DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
 --------- | ---- | -------- | --------------
 action_result.status | string | | success failure |
 action_result.message | string | | |
-action_result.parameter.domain | string | | |
-action_result.data.\*.certificate_found | boolean | | True False |
-action_result.data.\*.host | string | | |
+action_result.parameter.domain | string | `domain` `url` | |
+action_result.data.\*.certificate_found | boolean | `certificate` | True False |
+action_result.data.\*.host | string | `domain` `host name` | |
 action_result.data.\*.elapsed_ms | numeric | | |
 action_result.data.\*.expired | boolean | | True False |
 action_result.data.\*.valid | boolean | | True False |
@@ -142,7 +142,7 @@ Read only: **True**
 
 PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 --------- | -------- | ----------- | ---- | --------
-**ip** | required | IP address to check reputation | string | |
+**ip** | required | IP address to check reputation | string | `ip` |
 
 #### Action Output
 
@@ -150,8 +150,8 @@ DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
 --------- | ---- | -------- | --------------
 action_result.status | string | | success failure |
 action_result.message | string | | |
-action_result.parameter.ip | string | | |
-action_result.data.\*.ip | string | | |
+action_result.parameter.ip | string | `ip` | |
+action_result.data.\*.ip | string | `ip` | |
 action_result.data.\*.version | string | | |
 action_result.data.\*.detections | numeric | | |
 action_result.data.\*.engines_count | numeric | | |
@@ -160,9 +160,9 @@ action_result.data.\*.scan_time_ms | numeric | | |
 action_result.data.\*.elapsed_ms | numeric | | |
 action_result.data.\*.engines.\*.name | string | | |
 action_result.data.\*.engines.\*.detected | boolean | | True False |
-action_result.data.\*.engines.\*.reference | string | | |
+action_result.data.\*.engines.\*.reference | string | `url` | |
 action_result.data.\*.engines.\*.elapsed_ms | numeric | | |
-action_result.data.\*.reverse_dns | string | | |
+action_result.data.\*.reverse_dns | string | `host name` | |
 action_result.data.\*.continent_code | string | | |
 action_result.data.\*.continent_name | string | | |
 action_result.data.\*.country_code | string | | |
@@ -187,8 +187,8 @@ action_result.data.\*.asname | string | | |
 action_result.data.\*.asn_route | string | | |
 action_result.data.\*.asn_org | string | | |
 action_result.data.\*.asn_country_code | string | | |
-action_result.data.\*.abuse_email | string | | |
-action_result.data.\*.asn_domain | string | | |
+action_result.data.\*.abuse_email | string | `email` | |
+action_result.data.\*.asn_domain | string | `domain` | |
 action_result.data.\*.asn_type | string | | |
 action_result.data.\*.is_proxy | boolean | | True False |
 action_result.data.\*.is_webproxy | boolean | | True False |
@@ -215,7 +215,7 @@ Read only: **True**
 
 PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 --------- | -------- | ----------- | ---- | --------
-**domain** | required | Domain to check reputation | string | |
+**domain** | required | Domain to check reputation | string | `domain` `url` |
 
 #### Action Output
 
@@ -223,8 +223,8 @@ DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
 --------- | ---- | -------- | --------------
 action_result.status | string | | success failure |
 action_result.message | string | | |
-action_result.parameter.domain | string | | |
-action_result.data.\*.host | string | | |
+action_result.parameter.domain | string | `domain` `url` | |
+action_result.data.\*.host | string | `domain` `host name` | |
 action_result.data.\*.detections | numeric | | |
 action_result.data.\*.engines_count | numeric | | |
 action_result.data.\*.detection_rate | string | | |
@@ -233,10 +233,10 @@ action_result.data.\*.elapsed_ms | numeric | | |
 action_result.data.\*.engines.\*.name | string | | |
 action_result.data.\*.engines.\*.detected | boolean | | True False |
 action_result.data.\*.engines.\*.confidence | string | | |
-action_result.data.\*.engines.\*.reference | string | | |
+action_result.data.\*.engines.\*.reference | string | `url` | |
 action_result.data.\*.engines.\*.elapsed_ms | numeric | | |
-action_result.data.\*.server_ip | string | | |
-action_result.data.\*.reverse_dns | string | | |
+action_result.data.\*.server_ip | string | `ip` | |
+action_result.data.\*.reverse_dns | string | `host name` | |
 action_result.data.\*.continent_code | string | | |
 action_result.data.\*.continent_name | string | | |
 action_result.data.\*.country_code | string | | |
@@ -260,7 +260,7 @@ action_result.data.\*.is_suspicious_homoglyph | boolean | | True False |
 action_result.data.\*.is_possible_typosquatting | boolean | | True False |
 action_result.data.\*.website_popularity | string | | |
 action_result.data.\*.is_risky_category | boolean | | True False |
-action_result.data.\*.root_domain | string | | |
+action_result.data.\*.root_domain | string | `domain` | |
 action_result.data.\*.subdomain | string | | |
 action_result.data.\*.tld | string | | |
 action_result.data.\*.risk_score | numeric | | |
