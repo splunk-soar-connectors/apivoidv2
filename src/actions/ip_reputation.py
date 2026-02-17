@@ -29,9 +29,7 @@ class IpReputationParams(Params):
 
     ip: str = Param(
         description="IP address to check reputation",
-        required=True,
         primary=True,
-        cef_types=["ip"],
         column_name="IP Address",
     )
 
@@ -40,183 +38,85 @@ class IpBlacklistEngine(ActionOutput):
     """Individual blacklist engine result for IP"""
 
     name: str | None = OutputField(
-        example_values=["Roquesor BL"],
         column_name="Engine",
     )
     detected: bool | None = OutputField(
-        example_values=[True, False],
         column_name="Detected",
     )
     reference: str | None = OutputField(
-        cef_types=["url"],
-        example_values=["https://es.roquesor.com/en/"],
         column_name="Reference",
     )
-    elapsed_ms: str | None = OutputField(
-        example_values=["0.00", "0.01"],
-    )
+    elapsed_ms: int | None = OutputField()
 
 
 class IpReputationDetails(ActionOutput):
     """IP reputation check details and results"""
 
     # Basic IP Info
-    ip: str | None = OutputField(
-        cef_types=["ip"],
-        example_values=["8.8.8.8", "1.1.1.1"],
-    )
-    version: str | None = OutputField(
-        example_values=["IPv4", "IPv6"],
-    )
+    ip: str | None = OutputField()
+    version: str | None = OutputField()
 
     # Blacklist Scan Results
-    detections: int | None = OutputField(
-        example_values=[0, 5, 12],
-    )
-    engines_count: int | None = OutputField(
-        example_values=[90, 95, 100],
-    )
-    detection_rate: str | None = OutputField(
-        example_values=["0%", "5%", "12%"],
-    )
-    scan_time_ms: str | None = OutputField(
-        example_values=["0.01", "0.27", "1.23"],
-    )
-    elapsed_ms: int | None = OutputField(
-        example_values=[45, 123, 87],
-    )
-    engines: list[IpBlacklistEngine] | None = OutputField(
-        example_values=[],
-    )
+    detections: int | None = OutputField()
+    engines_count: int | None = OutputField()
+    detection_rate: str | None = OutputField()
+    scan_time_ms: int | None = OutputField()
+    elapsed_ms: int | None = OutputField()
+    engines: list[IpBlacklistEngine] | None = OutputField()
 
     # Geolocation Information
-    reverse_dns: str | None = OutputField(
-        cef_types=["host name"],
-        example_values=["dojo.census.shodan.io"],
-    )
-    continent_code: str | None = OutputField(
-        example_values=["EU", "NA", "AS"],
-    )
-    continent_name: str | None = OutputField(
-        example_values=["Europe", "North America"],
-    )
-    country_code: str | None = OutputField(
-        example_values=["US", "NL", "DE"],
-    )
-    country_name: str | None = OutputField(
-        example_values=["United States", "Netherlands"],
-    )
-    region_name: str | None = OutputField(
-        example_values=["California", "Noord-Holland"],
-    )
-    city_name: str | None = OutputField(
-        example_values=["Amsterdam", "Mountain View"],
-    )
-    latitude: float | None = OutputField(
-        example_values=[52.378502, 37.38605],
-    )
-    longitude: float | None = OutputField(
-        example_values=[4.89998, -122.08385],
-    )
-    isp: str | None = OutputField(
-        example_values=["Google LLC", "FiberXpress BV"],
-    )
+    reverse_dns: str | None = OutputField()
+    continent_code: str | None = OutputField()
+    continent_name: str | None = OutputField()
+    country_code: str | None = OutputField()
+    country_name: str | None = OutputField()
+    region_name: str | None = OutputField()
+    city_name: str | None = OutputField()
+    latitude: float | None = OutputField()
+    longitude: float | None = OutputField()
+    isp: str | None = OutputField()
 
     # Bot & Service Detection
-    is_bogon: bool | None = OutputField(
-        example_values=[True, False],
-    )
-    is_spamhaus_drop: bool | None = OutputField(
-        example_values=[True, False],
-    )
-    is_fake_bot: bool | None = OutputField(
-        example_values=[True, False],
-    )
-    is_google_bot: bool | None = OutputField(
-        example_values=[True, False],
-    )
-    is_search_engine_bot: bool | None = OutputField(
-        example_values=[True, False],
-    )
-    is_public_dns: bool | None = OutputField(
-        example_values=[True, False],
-    )
-    cloud_provider: str | None = OutputField(
-        example_values=["AWS", "Google Cloud", "Azure"],
-    )
-    aws_service: str | None = OutputField(
-        example_values=["EC2", "Lambda", ""],
-    )
-    is_google_service: bool | None = OutputField(
-        example_values=[True, False],
-    )
-    is_satellite: bool | None = OutputField(
-        example_values=[True, False],
-    )
+    is_bogon: bool | None = OutputField()
+    is_spamhaus_drop: bool | None = OutputField()
+    is_fake_bot: bool | None = OutputField()
+    is_google_bot: bool | None = OutputField()
+    is_search_engine_bot: bool | None = OutputField()
+    is_public_dns: bool | None = OutputField()
+    cloud_provider: str | None = OutputField()
+    aws_service: str | None = OutputField()
+    is_google_service: bool | None = OutputField()
+    is_satellite: bool | None = OutputField()
 
     # ASN Details
-    asn: str | None = OutputField(
-        example_values=["AS15169", "AS202425"],
-    )
-    asname: str | None = OutputField(
-        example_values=["INT-NETWORK", "GOOGLE"],
-    )
-    asn_route: str | None = OutputField(
-        example_values=["80.82.77.0/24"],
-    )
-    asn_org: str | None = OutputField(
-        example_values=["Google LLC", "IP Volume inc"],
-    )
-    asn_country_code: str | None = OutputField(
-        example_values=["US", "SC"],
-    )
-    abuse_email: str | None = OutputField(
-        cef_types=["email"],
-        example_values=["abuse@google.com"],
-    )
-    asn_domain: str | None = OutputField(
-        cef_types=["domain"],
-        example_values=["google.com", "ipvolume.net"],
-    )
-    asn_type: str | None = OutputField(
-        example_values=["hosting", "isp", "business"],
-    )
+    asn: str | None = OutputField()
+    asname: str | None = OutputField()
+    asn_route: str | None = OutputField()
+    asn_org: str | None = OutputField()
+    asn_country_code: str | None = OutputField()
+    abuse_email: str | None = OutputField()
+    asn_domain: str | None = OutputField()
+    asn_type: str | None = OutputField()
 
     # Anonymity Detection
-    is_proxy: bool | None = OutputField(
-        example_values=[True, False],
-    )
-    is_webproxy: bool | None = OutputField(
-        example_values=[True, False],
-    )
-    is_residential_proxy: bool | None = OutputField(
-        example_values=[True, False],
-    )
-    is_vpn: bool | None = OutputField(
-        example_values=[True, False],
-    )
-    is_hosting: bool | None = OutputField(
-        example_values=[True, False],
-    )
-    is_relay: bool | None = OutputField(
-        example_values=[True, False],
-    )
-    is_tor: bool | None = OutputField(
-        example_values=[True, False],
-    )
+    is_proxy: bool | None = OutputField()
+    is_webproxy: bool | None = OutputField()
+    is_residential_proxy: bool | None = OutputField()
+    is_vpn: bool | None = OutputField()
+    is_hosting: bool | None = OutputField()
+    is_relay: bool | None = OutputField()
+    is_tor: bool | None = OutputField()
 
     # Risk Score
-    risk_score: int | None = OutputField(
-        example_values=[0, 50, 100],
-    )
+    risk_score: int | None = OutputField()
 
 
 class IpReputationSummary(ActionOutput):
     """Summary information for IP reputation check"""
 
-    detections: int | None = OutputField(example_values=[0, 5, 12])
-    engines_count: int | None = OutputField(example_values=[90, 95, 100])
-    detection_rate: str | None = OutputField(example_values=["0%", "5%", "12%"])
+    detections: int | None = OutputField()
+    engines_count: int | None = OutputField()
+    detection_rate: str | None = OutputField()
 
     def get_message(self) -> str:
         """Generate formatted summary message"""
@@ -266,7 +166,7 @@ def ip_reputation(
         detections=blacklists.get("detections"),
         engines_count=blacklists.get("engines_count"),
         detection_rate=blacklists.get("detection_rate"),
-        scan_time_ms=str(blacklists.get("scan_time_ms", "0.00")),
+        scan_time_ms=int(blacklists.get("scan_time_ms")),
         elapsed_ms=data.get("elapsed_ms"),
         engines=engines_list,
         reverse_dns=information.get("reverse_dns"),
