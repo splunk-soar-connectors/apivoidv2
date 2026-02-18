@@ -154,7 +154,7 @@ def ip_reputation(
                 name=engine_info.get("name", engine_name),
                 detected=engine_info.get("detected"),
                 reference=engine_info.get("reference"),
-                elapsed_ms=int(engine_info.get("elapsed_ms")),
+                elapsed_ms=engine_info.get("elapsed_ms"),
             )
         )
 
@@ -169,7 +169,7 @@ def ip_reputation(
         detections=blacklists.get("detections"),
         engines_count=blacklists.get("engines_count"),
         detection_rate=blacklists.get("detection_rate"),
-        scan_time_ms=int(blacklists.get("scan_time_ms")),
+        scan_time_ms=blacklists.get("scan_time_ms"),
         elapsed_ms=data.get("elapsed_ms"),
         engines=engines_list,
         reverse_dns=information.get("reverse_dns"),

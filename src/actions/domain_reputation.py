@@ -150,7 +150,7 @@ def domain_reputation(
                 detected=engine_info.get("detected"),
                 confidence=engine_info.get("confidence"),
                 reference=engine_info.get("reference"),
-                elapsed_ms=int(engine_info.get("elapsed_ms")),
+                elapsed_ms=engine_info.get("elapsed_ms"),
             )
         )
 
