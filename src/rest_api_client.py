@@ -14,21 +14,14 @@
 """REST client for APIVoid v2 API call"""
 
 import requests
+from soar_sdk.exceptions import ActionFailure, AssetMisconfiguration
 from soar_sdk.logging import getLogger
 
 from .apivoid_consts import (
     CONTENT_TYPE_JSON,
     DEFAULT_TIMEOUT,
-    ERROR_API_ERROR,
-    ERROR_CONNECTION,
-    ERROR_HTTP,
-    ERROR_INVALID_JSON,
-    ERROR_REQUEST,
-    ERROR_TIMEOUT,
     HEADER_API_KEY,
     HEADER_CONTENT_TYPE,
-    KEY_ERROR,
-    MSG_MAKING_API_REQUEST,
 )
 from .asset import Asset
 
@@ -43,7 +36,8 @@ def _make_api_request(endpoint: str, asset: Asset, params: dict) -> dict:
     :param asset: Asset instance (server_url, api_key)
     :param params: Request parameters to send as JSON body
     :return: Response JSON data
-    :raises Exception: If request fails or API returns an error
+    :raises ActionFailure: If request fails or API returns an error
+    :raises AssetMisconfiguration: If authentication fails (401/403)
     """
     url = f"{asset.server_url.rstrip('/')}/{endpoint}"
     headers = {
@@ -51,7 +45,7 @@ def _make_api_request(endpoint: str, asset: Asset, params: dict) -> dict:
         HEADER_CONTENT_TYPE: CONTENT_TYPE_JSON,
     }
 
-    logger.debug(MSG_MAKING_API_REQUEST.format(url))
+    logger.progress("Making API request to: %s", url)
 
     try:
         response = requests.post(
@@ -59,23 +53,19 @@ def _make_api_request(endpoint: str, asset: Asset, params: dict) -> dict:
         )
         response.raise_for_status()
         data = response.json()
-
-        if data.get(KEY_ERROR):
-            error_msg = data.get(KEY_ERROR)
-            logger.error(ERROR_API_ERROR.format(error_msg))
-            raise Exception(ERROR_API_ERROR.format(error_msg))
-
-        return data
-
-    except requests.exceptions.Timeout:
-        raise Exception(ERROR_TIMEOUT.format(DEFAULT_TIMEOUT)) from None
-    except requests.exceptions.ConnectionError as e:
-        raise Exception(ERROR_CONNECTION.format(str(e))) from None
     except requests.exceptions.HTTPError as e:
-        raise Exception(
-            ERROR_HTTP.format(e.response.status_code, e.response.text)
-        ) from None
-    except requests.exceptions.RequestException as e:
-        raise Exception(ERROR_REQUEST.format(str(e))) from None
-    except ValueError as e:
-        raise Exception(ERROR_INVALID_JSON.format(str(e))) from None
+        status = e.response.status_code
+        try:
+            detail = e.response.json().get("error") or e.response.text
+        except ValueError:
+            detail = e.response.text
+        if status in (401, 403):
+            raise AssetMisconfiguration(
+                f"Authentication failed (HTTP {status}). Check your API key. Detail: {detail}"
+            ) from e
+        raise ActionFailure(f"HTTP {status}: {detail}") from e
+    except Exception as e:
+        raise ActionFailure(str(e)) from e
+    if (error_msg := data.get("error")) is not None:
+        raise ActionFailure(str(error_msg))
+    return data

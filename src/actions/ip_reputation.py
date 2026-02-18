@@ -14,6 +14,7 @@
 
 from soar_sdk.abstract import SOARClient
 from soar_sdk.action_results import ActionOutput, OutputField
+from soar_sdk.exceptions import ActionFailure
 from soar_sdk.logging import getLogger
 from soar_sdk.params import Param, Params
 
@@ -48,7 +49,7 @@ class IpBlacklistEngine(ActionOutput):
         cef_types=["url"],
         column_name="Reference",
     )
-    elapsed_ms: int | None = OutputField()
+    elapsed_ms: int | None = None
 
 
 class IpReputationDetails(ActionOutput):
@@ -56,69 +57,69 @@ class IpReputationDetails(ActionOutput):
 
     # Basic IP Info
     ip: str | None = OutputField(cef_types=["ip"])
-    version: str | None = OutputField()
+    version: str | None = None
 
     # Blacklist Scan Results
-    detections: int | None = OutputField()
-    engines_count: int | None = OutputField()
-    detection_rate: str | None = OutputField()
-    scan_time_ms: int | None = OutputField()
-    elapsed_ms: int | None = OutputField()
-    engines: list[IpBlacklistEngine] | None = OutputField()
+    detections: int | None = None
+    engines_count: int | None = None
+    detection_rate: str | None = None
+    scan_time_ms: int | None = None
+    elapsed_ms: int | None = None
+    engines: list[IpBlacklistEngine] | None = None
 
     # Geolocation Information
     reverse_dns: str | None = OutputField(cef_types=["host name"])
-    continent_code: str | None = OutputField()
-    continent_name: str | None = OutputField()
-    country_code: str | None = OutputField()
-    country_name: str | None = OutputField()
-    region_name: str | None = OutputField()
-    city_name: str | None = OutputField()
-    latitude: float | None = OutputField()
-    longitude: float | None = OutputField()
-    isp: str | None = OutputField()
+    continent_code: str | None = None
+    continent_name: str | None = None
+    country_code: str | None = None
+    country_name: str | None = None
+    region_name: str | None = None
+    city_name: str | None = None
+    latitude: float | None = None
+    longitude: float | None = None
+    isp: str | None = None
 
     # Bot & Service Detection
-    is_bogon: bool | None = OutputField()
-    is_spamhaus_drop: bool | None = OutputField()
-    is_fake_bot: bool | None = OutputField()
-    is_google_bot: bool | None = OutputField()
-    is_search_engine_bot: bool | None = OutputField()
-    is_public_dns: bool | None = OutputField()
-    cloud_provider: str | None = OutputField()
-    aws_service: str | None = OutputField()
-    is_google_service: bool | None = OutputField()
-    is_satellite: bool | None = OutputField()
+    is_bogon: bool | None = None
+    is_spamhaus_drop: bool | None = None
+    is_fake_bot: bool | None = None
+    is_google_bot: bool | None = None
+    is_search_engine_bot: bool | None = None
+    is_public_dns: bool | None = None
+    cloud_provider: str | None = None
+    aws_service: str | None = None
+    is_google_service: bool | None = None
+    is_satellite: bool | None = None
 
     # ASN Details
-    asn: str | None = OutputField()
-    asname: str | None = OutputField()
-    asn_route: str | None = OutputField()
-    asn_org: str | None = OutputField()
-    asn_country_code: str | None = OutputField()
+    asn: str | None = None
+    asname: str | None = None
+    asn_route: str | None = None
+    asn_org: str | None = None
+    asn_country_code: str | None = None
     abuse_email: str | None = OutputField(cef_types=["email"])
     asn_domain: str | None = OutputField(cef_types=["domain"])
-    asn_type: str | None = OutputField()
+    asn_type: str | None = None
 
     # Anonymity Detection
-    is_proxy: bool | None = OutputField()
-    is_webproxy: bool | None = OutputField()
-    is_residential_proxy: bool | None = OutputField()
-    is_vpn: bool | None = OutputField()
-    is_hosting: bool | None = OutputField()
-    is_relay: bool | None = OutputField()
-    is_tor: bool | None = OutputField()
+    is_proxy: bool | None = None
+    is_webproxy: bool | None = None
+    is_residential_proxy: bool | None = None
+    is_vpn: bool | None = None
+    is_hosting: bool | None = None
+    is_relay: bool | None = None
+    is_tor: bool | None = None
 
     # Risk Score
-    risk_score: int | None = OutputField()
+    risk_score: int | None = None
 
 
 class IpReputationSummary(ActionOutput):
     """Summary information for IP reputation check"""
 
-    detections: int | None = OutputField()
-    engines_count: int | None = OutputField()
-    detection_rate: str | None = OutputField()
+    detections: int | None = None
+    engines_count: int | None = None
+    detection_rate: str | None = None
 
     def get_message(self) -> str:
         """Generate formatted summary message"""
@@ -136,14 +137,14 @@ def ip_reputation(
     asset: Asset,
 ) -> IpReputationDetails:
     """Check IP address reputation against multiple blacklist engines."""
-    logger.info(MSG_QUERYING_IP_REP.format(param.ip))
+    logger.progress(MSG_QUERYING_IP_REP.format(param.ip))
 
     params = {"ip": param.ip}
     data = _make_api_request(ENDPOINT_IP_REPUTATION, asset, params)
 
     blacklists = data.get(KEY_BLACKLISTS)
     if not blacklists:
-        raise Exception(ERROR_NO_BLACKLIST_DATA)
+        raise ActionFailure(ERROR_NO_BLACKLIST_DATA)
 
     engines_list = []
     engines_data = blacklists.get(KEY_ENGINES, {})
@@ -216,8 +217,4 @@ def ip_reputation(
     )
     soar.set_summary(summary)
     soar.set_message(summary.get_message())
-
-    logger.info(
-        MSG_IP_REP_COMPLETED.format(param.ip, result.detections, result.engines_count)
-    )
     return result

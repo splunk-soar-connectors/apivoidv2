@@ -14,6 +14,7 @@
 from soar_sdk.abstract import SOARClient
 from soar_sdk.app import App
 from soar_sdk.logging import getLogger
+from soar_sdk.exceptions import ActionFailure, AssetMisconfiguration
 from .apivoid_consts import *
 from .asset import Asset
 from .actions.get_cert_info import (
@@ -58,7 +59,7 @@ app = App(
 @app.test_connectivity()
 def test_connectivity(soar: SOARClient, asset: Asset) -> None:
     """Test connectivity to APIVoid v2 API"""
-    logger.info(MSG_CONNECTING_TO_SERVER)
+    logger.progress(MSG_CONNECTING_TO_SERVER)
 
     try:
         # Test API connectivity with SSL Info endpoint
@@ -67,13 +68,16 @@ def test_connectivity(soar: SOARClient, asset: Asset) -> None:
 
         # Validate response structure
         if not data.get(KEY_CERTIFICATE):
-            raise Exception(ERROR_UNEXPECTED_RESPONSE)
+            raise AssetMisconfiguration(ERROR_UNEXPECTED_RESPONSE)
 
-        logger.info(MSG_TEST_CONNECTIVITY_PASSED)
+        logger.progress(MSG_TEST_CONNECTIVITY_PASSED)
 
     except Exception as e:
         logger.error(MSG_TEST_CONNECTIVITY_FAILED)
-        raise Exception(f"{MSG_TEST_CONNECTIVITY_FAILED}: {e!s}") from e
+        raise ActionFailure(
+            f"{MSG_TEST_CONNECTIVITY_FAILED}: {e!s}",
+            action_name="test connectivity",
+        ) from e
 
 
 # Register actions (callables so runtime import works on Phantom)

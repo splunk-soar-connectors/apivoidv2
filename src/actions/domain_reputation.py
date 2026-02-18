@@ -14,6 +14,7 @@
 
 from soar_sdk.abstract import SOARClient
 from soar_sdk.action_results import ActionOutput, OutputField
+from soar_sdk.exceptions import ActionFailure
 from soar_sdk.logging import getLogger
 from soar_sdk.params import Param, Params
 
@@ -51,7 +52,7 @@ class BlacklistEngine(ActionOutput):
         cef_types=["url"],
         column_name="Reference",
     )
-    elapsed_ms: int | None = OutputField()
+    elapsed_ms: int | None = None
 
 
 class DomainReputationDetails(ActionOutput):
@@ -61,59 +62,59 @@ class DomainReputationDetails(ActionOutput):
     host: str | None = OutputField(cef_types=["domain", "host name"])
 
     # Blacklist Scan Results
-    detections: int | None = OutputField()
-    engines_count: int | None = OutputField()
-    detection_rate: str | None = OutputField()
-    scan_time_ms: int | None = OutputField()
-    elapsed_ms: int | None = OutputField()
-    engines: list[BlacklistEngine] | None = OutputField()
+    detections: int | None = None
+    engines_count: int | None = None
+    detection_rate: str | None = None
+    scan_time_ms: int | None = None
+    elapsed_ms: int | None = None
+    engines: list[BlacklistEngine] | None = None
 
     # Server Details
     server_ip: str | None = OutputField(cef_types=["ip"])
     reverse_dns: str | None = OutputField(cef_types=["host name"])
-    continent_code: str | None = OutputField()
-    continent_name: str | None = OutputField()
-    country_code: str | None = OutputField()
-    country_name: str | None = OutputField()
-    region_name: str | None = OutputField()
-    city_name: str | None = OutputField()
-    latitude: float | None = OutputField()
-    longitude: float | None = OutputField()
-    isp: str | None = OutputField()
-    asn: str | None = OutputField()
+    continent_code: str | None = None
+    continent_name: str | None = None
+    country_code: str | None = None
+    country_name: str | None = None
+    region_name: str | None = None
+    city_name: str | None = None
+    latitude: float | None = None
+    longitude: float | None = None
+    isp: str | None = None
+    asn: str | None = None
 
     # Domain Category
-    is_free_hosting: bool | None = OutputField()
-    is_anonymizer: bool | None = OutputField()
-    is_url_shortener: bool | None = OutputField()
-    is_free_dynamic_dns: bool | None = OutputField()
-    is_code_sandbox: bool | None = OutputField()
-    is_form_builder: bool | None = OutputField()
-    is_free_file_sharing: bool | None = OutputField()
-    is_pastebin: bool | None = OutputField()
+    is_free_hosting: bool | None = None
+    is_anonymizer: bool | None = None
+    is_url_shortener: bool | None = None
+    is_free_dynamic_dns: bool | None = None
+    is_code_sandbox: bool | None = None
+    is_form_builder: bool | None = None
+    is_free_file_sharing: bool | None = None
+    is_pastebin: bool | None = None
 
     # Security Checks
-    is_most_abused_tld: bool | None = OutputField()
-    is_suspicious_homoglyph: bool | None = OutputField()
-    is_possible_typosquatting: bool | None = OutputField()
-    website_popularity: str | None = OutputField()
-    is_risky_category: bool | None = OutputField()
+    is_most_abused_tld: bool | None = None
+    is_suspicious_homoglyph: bool | None = None
+    is_possible_typosquatting: bool | None = None
+    website_popularity: str | None = None
+    is_risky_category: bool | None = None
 
     # Domain Parts
     root_domain: str | None = OutputField(cef_types=["domain"])
-    subdomain: str | None = OutputField()
-    tld: str | None = OutputField()
+    subdomain: str | None = None
+    tld: str | None = None
 
     # Risk Score
-    risk_score: int | None = OutputField()
+    risk_score: int | None = None
 
 
 class DomainReputationSummary(ActionOutput):
     """Summary information for domain reputation check"""
 
-    detections: int | None = OutputField()
-    engines_count: int | None = OutputField()
-    detection_rate: str | None = OutputField()
+    detections: int | None = None
+    engines_count: int | None = None
+    detection_rate: str | None = None
 
     def get_message(self) -> str:
         """Generate formatted summary message"""
@@ -131,14 +132,14 @@ def domain_reputation(
     asset: Asset,
 ) -> DomainReputationDetails:
     """Check domain reputation against multiple blacklist engines."""
-    logger.info(MSG_QUERYING_DOMAIN_REP.format(param.domain))
+    logger.progress(MSG_QUERYING_DOMAIN_REP.format(param.domain))
 
     params = {"host": param.domain}
     data = _make_api_request(ENDPOINT_DOMAIN_REPUTATION, asset, params)
 
     blacklists = data.get(KEY_BLACKLISTS)
     if not blacklists:
-        raise Exception(ERROR_NO_BLACKLIST_DATA)
+        raise ActionFailure(ERROR_NO_BLACKLIST_DATA)
 
     engines_list = []
     engines_data = blacklists.get(KEY_ENGINES, {})
@@ -205,8 +206,4 @@ def domain_reputation(
     )
     soar.set_summary(summary)
     soar.set_message(summary.get_message())
-
-    logger.info(
-        MSG_DOMAIN_REP_COMPLETED.format(result.detections, result.engines_count)
-    )
     return result

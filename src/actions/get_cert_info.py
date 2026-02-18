@@ -14,6 +14,7 @@
 
 from soar_sdk.abstract import SOARClient
 from soar_sdk.action_results import ActionOutput, OutputField
+from soar_sdk.exceptions import ActionFailure
 from soar_sdk.logging import getLogger
 from soar_sdk.params import Param, Params
 
@@ -52,39 +53,39 @@ class CertificateDetails(ActionOutput):
     expired: bool | None = OutputField(
         column_name="Certificate Expired",
     )
-    valid: bool | None = OutputField()
-    valid_peer: bool | None = OutputField()
-    name_match: bool | None = OutputField()
-    blacklisted: bool | None = OutputField()
-    revoked: bool | None = OutputField()
+    valid: bool | None = None
+    valid_peer: bool | None = None
+    name_match: bool | None = None
+    blacklisted: bool | None = None
+    revoked: bool | None = None
 
     # Certificate Metadata
-    certificate_type: str | None = OutputField()
-    fingerprint_sha1: str | None = OutputField()
-    fingerprint_sha256: str | None = OutputField()
-    deprecated_issuer: bool | None = OutputField()
+    certificate_type: str | None = None
+    fingerprint_sha1: str | None = None
+    fingerprint_sha256: str | None = None
+    deprecated_issuer: bool | None = None
 
     # Certificate Details Hash
-    certificate_hash: str | None = OutputField()
+    certificate_hash: str | None = None
 
     # Certificate Version
-    certificate_version: str | None = OutputField()
+    certificate_version: str | None = None
 
     # Subject Details
-    subject_name: str | None = OutputField()
-    subject_common_name: str | None = OutputField()
-    subject_alternative_names: str | None = OutputField()
-    subject_organization: str | None = OutputField()
-    subject_organization_unit: str | None = OutputField()
-    subject_category: str | None = OutputField()
-    subject_country: str | None = OutputField()
-    subject_state: str | None = OutputField()
-    subject_location: str | None = OutputField()
-    subject_postal_code: str | None = OutputField()
-    subject_street: str | None = OutputField()
-    subject_serial_number: str | None = OutputField()
-    subject_inc_country: str | None = OutputField()
-    subject_inc_state: str | None = OutputField()
+    subject_name: str | None = None
+    subject_common_name: str | None = None
+    subject_alternative_names: str | None = None
+    subject_organization: str | None = None
+    subject_organization_unit: str | None = None
+    subject_category: str | None = None
+    subject_country: str | None = None
+    subject_state: str | None = None
+    subject_location: str | None = None
+    subject_postal_code: str | None = None
+    subject_street: str | None = None
+    subject_serial_number: str | None = None
+    subject_inc_country: str | None = None
+    subject_inc_state: str | None = None
 
     # Issuer Details
     issuer_common_name: str | None = OutputField(
@@ -93,19 +94,19 @@ class CertificateDetails(ActionOutput):
     issuer_organization: str | None = OutputField(
         column_name="Issuer Organization",
     )
-    issuer_organization_unit: str | None = OutputField()
-    issuer_country: str | None = OutputField()
-    issuer_state: str | None = OutputField()
-    issuer_location: str | None = OutputField()
+    issuer_organization_unit: str | None = None
+    issuer_country: str | None = None
+    issuer_state: str | None = None
+    issuer_location: str | None = None
 
     # Public Key
-    public_key_algorithm: str | None = OutputField()
-    public_key_size: int | None = OutputField()
+    public_key_algorithm: str | None = None
+    public_key_size: int | None = None
 
     # Signature Details
-    signature_serial: str | None = OutputField()
-    signature_serial_hex: str | None = OutputField()
-    signature_type: str | None = OutputField()
+    signature_serial: str | None = None
+    signature_serial_hex: str | None = None
+    signature_type: str | None = None
 
     # Validity Details
     valid_from: str | None = OutputField(
@@ -114,39 +115,39 @@ class CertificateDetails(ActionOutput):
     valid_to: str | None = OutputField(
         column_name="Valid To",
     )
-    valid_from_timestamp: int | None = OutputField()
-    valid_to_timestamp: int | None = OutputField()
-    days_left: int | None = OutputField()
+    valid_from_timestamp: int | None = None
+    valid_to_timestamp: int | None = None
+    days_left: int | None = None
 
     # Extensions (flattened from nested structure)
-    extensions_authority_info_access: str | None = OutputField()
-    extensions_authority_key_identifier: str | None = OutputField()
-    extensions_subject_key_identifier: str | None = OutputField()
-    extensions_basic_constraints: str | None = OutputField()
-    extensions_certificate_policies: str | None = OutputField()
-    extensions_crl_distribution_points: str | None = OutputField()
-    extensions_key_usage: str | None = OutputField()
-    extensions_extended_key_usage: str | None = OutputField()
+    extensions_authority_info_access: str | None = None
+    extensions_authority_key_identifier: str | None = None
+    extensions_subject_key_identifier: str | None = None
+    extensions_basic_constraints: str | None = None
+    extensions_certificate_policies: str | None = None
+    extensions_crl_distribution_points: str | None = None
+    extensions_key_usage: str | None = None
+    extensions_extended_key_usage: str | None = None
 
     # Certificate Authority Info
-    certificate_authority: bool | None = OutputField()
-    authority_key_id: str | None = OutputField()
-    subject_key_id: str | None = OutputField()
+    certificate_authority: bool | None = None
+    authority_key_id: str | None = None
+    subject_key_id: str | None = None
 
     # Key Usages (comma-separated)
-    key_usages: str | None = OutputField()
-    extended_key_usages: str | None = OutputField()
-    crl_endpoints: str | None = OutputField()
+    key_usages: str | None = None
+    extended_key_usages: str | None = None
+    crl_endpoints: str | None = None
 
     # Authority Info (formatted string from array)
-    authority_info: str | None = OutputField()
+    authority_info: str | None = None
 
 
 class CertificateSummary(ActionOutput):
     """Summary for certificate info action"""
 
-    certificate_found: bool = OutputField()
-    domain: str = OutputField()
+    certificate_found: bool = None
+    domain: str = None
 
     def get_message(self) -> str:
         """Generate summary message following official SOAR SDK pattern"""
@@ -159,14 +160,14 @@ def get_cert_info(
     asset: Asset,
 ) -> CertificateDetails:
     """Get certificate information for a domain."""
-    logger.info(MSG_QUERYING_CERT_INFO.format(param.domain))
+    logger.progress(MSG_QUERYING_CERT_INFO.format(param.domain))
 
     params = {"host": param.domain}
     data = _make_api_request(ENDPOINT_SSL_INFO, asset, params)
 
     cert = data.get(KEY_CERTIFICATE)
     if not cert:
-        raise Exception(ERROR_NO_CERT_DATA)
+        raise ActionFailure(ERROR_NO_CERT_DATA)
 
     cert_found = cert.get("found", False)
     details = cert.get("details", {})
@@ -281,6 +282,4 @@ def get_cert_info(
     summary = CertificateSummary(certificate_found=cert_found, domain=param.domain)
     soar.set_summary(summary)
     soar.set_message(summary.get_message())
-
-    logger.info(MSG_CERT_INFO_SUCCESS.format(param.domain))
     return result
