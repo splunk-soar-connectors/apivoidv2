@@ -165,7 +165,7 @@ def domain_reputation(
         detections=blacklists.get("detections"),
         engines_count=blacklists.get("engines_count"),
         detection_rate=blacklists.get("detection_rate"),
-        scan_time_ms=int(blacklists.get("scan_time_ms")),
+        scan_time_ms=blacklists.get("scan_time_ms"),
         elapsed_ms=data.get("elapsed_ms"),
         engines=engines_list,
         server_ip=server_details.get("ip"),
