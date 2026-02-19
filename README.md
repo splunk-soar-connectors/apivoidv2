@@ -1,6 +1,6 @@
 # APIvoid v2
 
-Publisher: Splunk Inc. <br>
+Publisher: Splunk <br>
 Connector Version: 1.0.2 <br>
 Product Vendor: APIVoid <br>
 Product Name: APIVoid v2 <br>
