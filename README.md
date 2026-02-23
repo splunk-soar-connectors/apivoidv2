@@ -1,7 +1,7 @@
 # APIvoid v2
 
 Publisher: Splunk <br>
-Connector Version: 1.0.2 <br>
+Connector Version: 1.0.0 <br>
 Product Vendor: APIVoid <br>
 Product Name: APIVoid v2 <br>
 Minimum Product Version: 7.0.0

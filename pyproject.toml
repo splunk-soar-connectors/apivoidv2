@@ -1,6 +1,6 @@
 [project]
 name = "apivoidv2"
-version = "1.0.2"
+version = "1.0.0"
 description = "APIVoid v2 connector for Splunk SOAR using the SDK"
 license = "Copyright (c) 2026 Splunk Inc."
 requires-python = ">=3.13, <3.15"
