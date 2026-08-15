@@ -83,6 +83,7 @@ def test_connectivity(soar: SOARClient, asset: Asset) -> None:
 # Register actions (callables so runtime import works on Phantom)
 app.register_action(
     get_cert_info_action,
+    read_only=True,
     description="Query certificate information for a domain",
     action_type="investigate",
     params_class=GetCertInfoParams,
@@ -92,6 +93,7 @@ app.register_action(
 )
 app.register_action(
     ip_reputation_action,
+    read_only=True,
     description="Check IP address reputation against blacklists",
     action_type="investigate",
     params_class=IpReputationParams,
@@ -101,6 +103,7 @@ app.register_action(
 )
 app.register_action(
     domain_reputation_action,
+    read_only=True,
     description="Check domain reputation against blacklists",
     action_type="investigate",
     params_class=DomainReputationParams,
