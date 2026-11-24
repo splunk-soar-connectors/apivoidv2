@@ -6,7 +6,7 @@ license = "Copyright (c) 2026 Splunk Inc."
 requires-python = ">=3.13, <3.16, !=3.14.*"
 authors = []
 dependencies = [
-    "splunk-soar-sdk>=7.1.2",
+    "splunk-soar-sdk>=7.3.1",
 ]
 
 [tool.soar.app]
